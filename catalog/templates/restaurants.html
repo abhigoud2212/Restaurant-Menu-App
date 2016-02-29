@@ -1,0 +1,51 @@
+<html>
+
+<head>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+	</head>
+
+
+
+<div class = 'pane'>
+<h1 class="text-heading">Restaurants</h1>
+</div>
+
+	{% if 'username' not in session %}
+			<a class="login_tag" href="{{url_for('showLogin')}}">Login </a>
+
+	{% else %}
+<div class="login_tag">
+		<a href = "{{url_for('showRestaurants') }}"><img src="{{login_session['picture']}}" class = "login_img"> <br>
+		{{login_session['username']}}<br> </a>
+		<a href="{{url_for('disconnect')}}">Logout </a>
+	{% endif %}
+</div>
+<a href="{{url_for('newRestaurant')}}" class="createitem"> Create a New Restaurant</a>
+	<div class = "flash">
+		      {% with messages = get_flashed_messages() %}
+			{% if messages %}
+			<ul>
+        		{% for message in messages %}
+            	<li> <strong style="color:red;"> {{ message }} </strong> </li>
+        		{% endfor %}
+        	</ul>
+        		{% endif %}
+    			{% endwith %}
+
+{% for restaurant in restaurants %}
+
+
+<a href = "{{url_for('showMenu', restaurant_id = restaurant.id)}}" class = "restaurant-name">{{restaurant.name}}</a>
+	<div class = "editdeletepane">
+		<a href = "{{url_for('editRestaurant',restaurant_id = restaurant.id)}}">Edit</a>
+		<a href = "{{url_for('deleteRestaurant',restaurant_id = restaurant.id)}}">Delete</a>
+	</div>
+
+
+
+{% endfor %}
+
+</div>
+</body>
+
+</html>
