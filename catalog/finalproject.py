@@ -284,7 +284,7 @@ def newRestaurant():
         flash("Created a new Restaurant %s..!!!" % newRestaurant.name)
         return redirect(url_for('showRestaurants'))
     else:
-        return render_template('newRestaurant.html')
+        return render_template('newRestaurant.html', login_session = login_session)
 
 
 # Edit a restaurant
@@ -296,12 +296,12 @@ def editRestaurant(restaurant_id):
     if request.method == 'POST':
         if request.form['name']:
             editedRestaurant.name = request.form['name']
-            flash("Edited the name of the Restaurant to %s..!!!"
+            flash("Edited the name of the Restaurant to %s....!!!"
                   % editedRestaurant.name)
             return redirect(url_for('showRestaurants'))
     else:
         return render_template(
-            'editRestaurant.html', restaurant=editedRestaurant)
+            'editRestaurant.html', restaurant=editedRestaurant, login_session = login_session)
 
 
 # Delete a restaurant
@@ -319,7 +319,7 @@ def deleteRestaurant(restaurant_id):
             url_for('showRestaurants', restaurant_id=restaurant_id))
     else:
         return render_template(
-            'deleteRestaurant.html', restaurant=restaurantToDelete)
+            'deleteRestaurant.html', restaurant=restaurantToDelete, login_session = login_session)
 
 
 # Show a restaurant menu
@@ -330,7 +330,7 @@ def showMenu(restaurant_id):
     restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
     items = session.query(MenuItem).filter_by(
         restaurant_id=restaurant_id).all()
-    return render_template('menu.html', items=items, restaurant=restaurant)
+    return render_template('menu.html', items=items, restaurant=restaurant, login_session = login_session)
 
 
 # Create a new menu item
@@ -350,7 +350,7 @@ def newMenuItem(restaurant_id):
         flash("Created new item %s..!!!" % newItem.name)
         return redirect(url_for('showMenu', restaurant_id=restaurant_id))
     else:
-        return render_template('newmenuitem.html', restaurant_id=restaurant_id)
+        return render_template('newmenuitem.html', restaurant_id=restaurant_id, login_session = login_session)
 
     return render_template('newMenuItem.html', restaurant=restaurant)
 
@@ -379,7 +379,8 @@ def editMenuItem(restaurant_id, menu_id):
 
         return render_template(
             'editmenuitem.html', restaurant_id=restaurant_id,
-            menu_id=menu_id, item=editedItem)
+            menu_id=menu_id, item=editedItem,
+            login_session = login_session)
 
 
 # Delete a menu item
@@ -395,7 +396,7 @@ def deleteMenuItem(restaurant_id, menu_id):
         flash("Deleted the item with name %s...!!!" % itemToDelete.name)
         return redirect(url_for('showMenu', restaurant_id=restaurant_id))
     else:
-        return render_template('deleteMenuItem.html', item=itemToDelete)
+        return render_template('deleteMenuItem.html', item=itemToDelete, login_session = login_session)
 
 
 # JSON files for the menus and restaurants
